@@ -119,7 +119,11 @@ void mainThread()
 			clientModeHook->Init(gInts.ClientMode);
 			clientModeHook->HookMethod(&Hooked_CreateMove, gOffsets.iCreateMoveOffset); //ClientMode create move is called inside of CHLClient::CreateMove, and thus no need for hooking WriteUserCmdDelta.
 			clientModeHook->Rehook();
-		
+
+			// if you really want to use a sig, here is one.
+			// its far to long (the whole function, but go ahead if you really feel like it.
+			// it was mainly to test that my signature scanning was working.
+			//DWORD dwAddr = gSignatures.GetClientSignature("A1 ? ? ? ? 55 89 E5 0F B6 4D 0C 8B 10 89 45 08 89 4D 0C 5D 8B 42 2C FF E0");		
 		};
 
 		std::thread findCM(findCreateMove);
