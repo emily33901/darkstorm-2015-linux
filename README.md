@@ -1,3 +1,7 @@
 # Darkstorm 2015 ported to linux
 
-all functional!
+## Credits
+
+#### Gir489
+#### Casual Hacker
+#### The elf manpage
