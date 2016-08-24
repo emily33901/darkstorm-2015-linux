@@ -117,58 +117,56 @@ public:
 	Vector &GetAbsOrigin()
 	{
 		typedef Vector &(*OriginalFn)(void *);
-		return getvfunc<OriginalFn>(this, 10)(this);
+		return getvfunc<OriginalFn>(this, 11)(this);
 	}
 	Vector &GetAbsAngles()
 	{
 		typedef Vector &(*OriginalFn)(void *);
-		return getvfunc<OriginalFn>(this, 11)(this);
+		return getvfunc<OriginalFn>(this, 12)(this);
 	}
-	/*
-	void GetWorldSpaceCenter( Vector& vWorldSpaceCenter)
+	void GetWorldSpaceCenter(Vector &vWorldSpaceCenter)
 	{
 		Vector vMin, vMax;
-		this->GetRenderBounds( vMin, vMax );
+		this->GetRenderBounds(vMin, vMax);
 		vWorldSpaceCenter = this->GetAbsOrigin();
 		vWorldSpaceCenter.z += (vMin.z + vMax.z) / 2;
 	}
-	void *GetModel( )
+	void *GetModel()
 	{
-		void * pRenderable = (void *)(this + 0x4);
-		typedef void * (* OriginalFn )( void * );
-		return getvfunc<OriginalFn>( pRenderable, 9 )( pRenderable );
+		void *pRenderable = (void *)(this + 0x4);
+		typedef void *(*OriginalFn)(void *);
+		return getvfunc<OriginalFn>(pRenderable, 10)(pRenderable);
 	}
-	bool SetupBones( matrix3x4 *pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime )
+	bool SetupBones(matrix3x4 *pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime)
 	{
-		void * pRenderable = (void *)(this + 0x4);
-		typedef bool (* OriginalFn )( void *, matrix3x4*, int, int, float );
-		return getvfunc<OriginalFn>( pRenderable, 16 )( pRenderable, pBoneToWorldOut, nMaxBones, boneMask, currentTime );
+		void *pRenderable = (void *)(this + 0x4);
+		typedef bool (*OriginalFn)(void *, matrix3x4 *, int, int, float);
+		return getvfunc<OriginalFn>(pRenderable, 17)(pRenderable, pBoneToWorldOut, nMaxBones, boneMask, currentTime);
 	}
-	ClientClass* GetClientClass( )
+	ClientClass *GetClientClass()
 	{
-		void * pNetworkable = (void *)(this + 0x8);
-		typedef ClientClass* (* OriginalFn )( void * );
-		return getvfunc<OriginalFn>( pNetworkable, 2 )( pNetworkable );
+		void *pNetworkable = (void *)(this + 0x8);
+		typedef ClientClass *(*OriginalFn)(void *);
+		return getvfunc<OriginalFn>(pNetworkable, 3)(pNetworkable);
 	}
-	bool IsDormant( )
+	bool IsDormant()
 	{
-		void * pNetworkable = (void *)(this + 0x8);
-		typedef bool ( * OriginalFn )( void * );
-		return getvfunc<OriginalFn>( pNetworkable, 8 )( pNetworkable );
+		void *pNetworkable = (void *)(this + 0x8);
+		typedef bool (*OriginalFn)(void *);
+		return getvfunc<OriginalFn>(pNetworkable, 9)(pNetworkable);
 	}
-	int GetIndex( )
+	int GetIndex()
 	{
-		void * pNetworkable = (void *)(this + 0x8);
-		typedef int ( * OriginalFn )( void * );
-		return getvfunc<OriginalFn>( pNetworkable, 9 )( pNetworkable );
+		void *pNetworkable = (void *)(this + 0x8);
+		typedef int (*OriginalFn)(void *);
+		return getvfunc<OriginalFn>(pNetworkable, 10)(pNetworkable);
 	}
-	void GetRenderBounds( Vector& mins, Vector& maxs )
+	void GetRenderBounds(Vector &mins, Vector &maxs)
 	{
-		void * pRenderable = (void *)(this + 0x4);
-		typedef void ( * OriginalFn )( void *, Vector& , Vector& );
-		getvfunc<OriginalFn>( pRenderable, 20 )( pRenderable, mins, maxs );
+		void *pRenderable = (void *)(this + 0x4);
+		typedef void (*OriginalFn)(void *, Vector &, Vector &);
+		getvfunc<OriginalFn>(pRenderable, 21)(pRenderable, mins, maxs);
 	}
-	*/
 };
 
 class EngineClient
