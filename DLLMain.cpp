@@ -52,22 +52,19 @@ void mainThread()
 				panelHook->Init(gInts.Panels);
 				panelHook->HookMethod(&Hooked_PaintTraverse, gOffsets.iPaintTraverseOffset);
 				panelHook->Rehook();
-
-				//Log::Msg("Hooked_PaintTraverse=0x%X | Panels::PaintTraverse=0x%X",(PVOID)&Hooked_PaintTraverse, panelHook->GetMethod<PVOID>(gOffsets.iPaintTraverseOffset));
 			}
 		}
-
 		
+		// This sig here wont work on linux (a replacement one is further down)
 		//DWORD dwClientModeAddress = gSignatures.GetClientSignature("8B 0D ? ? ? ? 8B 02 D9 05");
 		//XASSERT(dwClientModeAddress);
 		//gInts.ClientMode = **(ClientModeShared***)(dwClientModeAddress + 2);
 		//LOGDEBUG("g_pClientModeShared_ptr client.dll+0x%X", (DWORD)gInts.ClientMode - dwClientBase);
 
-		// That sig there wont work on linux.
-
 		// because of how LD_PRELOAD works and the fact that g_pClientmodeshared is NULL roughly until the menu appears,
-		// we should get g_pClientmodeshared in Intro()
-
+		// we need to wait for the pointer to not be NULL before we try to hook this function.
+		// since this mainThread() function is not called from a thread, we need to make another thread that we can block until
+		// clientmodeshared is no longer NULL
 		auto findCreateMove = [&]()
 		{
 			
@@ -92,7 +89,7 @@ void mainThread()
 			*/
 
 			// get the 10th function in the vtable
-			DWORD dwHudProcessInput = (DWORD)((*(void ***)gInts.Client)[10]);
+			uintptr_t dwHudProcessInput = (uintptr_t)((*(void ***)gInts.Client)[10]);
 			XASSERT(dwHudProcessInput);
 		
 			/*
@@ -105,7 +102,7 @@ void mainThread()
 			}
 			*/
 		
-			DWORD dwClientModeAddress = dwHudProcessInput + 1;
+			uintptr_t dwClientModeAddress = dwHudProcessInput + 1;
 			XASSERT(dwClientModeAddress);
 
 			while((gInts.ClientMode = **(ClientModeShared ***)(dwClientModeAddress)) == NULL)
@@ -123,7 +120,7 @@ void mainThread()
 			// if you really want to use a sig, here is one.
 			// its far to long (the whole function, but go ahead if you really feel like it.
 			// it was mainly to test that my signature scanning was working.
-			//DWORD dwAddr = gSignatures.GetClientSignature("A1 ? ? ? ? 55 89 E5 0F B6 4D 0C 8B 10 89 45 08 89 4D 0C 5D 8B 42 2C FF E0");		
+			//uintptr_t dwAddr = gSignatures.GetClientSignature("A1 ? ? ? ? 55 89 E5 0F B6 4D 0C 8B 10 89 45 08 89 4D 0C 5D 8B 42 2C FF E0");		
 		};
 
 		std::thread findCM(findCreateMove);
@@ -135,17 +132,9 @@ void mainThread()
 
 void __attribute__((constructor)) base_main()
 {
-	//If you manually map, make sure you setup this function properly.
-   	Log::Init(NULL);
-   	//CreateThread( NULL, 0, (LPTHREAD_START_ROUTINE)dwMainThread, NULL, 0, NULL ); //CreateThread > _BeginThread. (For what we're doing, of course.)
-
-	Log::Msg("DLLMAIN CALLED!!!!");
-
    	// create the threads
   	//std::thread init(mainThread);
 	//init.detach();
-
-	// sleep this thread for 5 seconds to allow the engine to set single thread mode
 
 	mainThread();
 	

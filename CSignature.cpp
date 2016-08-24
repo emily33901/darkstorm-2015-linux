@@ -53,17 +53,17 @@ Elf32_Shdr *getSectionHeader(void *module, const char *sectionName)
 	}
 }
 
-DWORD CSignature::dwFindPattern(DWORD dwAddress, DWORD dwLength, const char* szPattern)
+uintptr_t CSignature::dwFindPattern(uintptr_t dwAddress, uintptr_t dwLength, const char* szPattern)
 {
 	const char* pat = szPattern;
-	DWORD firstMatch = NULL;
-	for (DWORD pCur = dwAddress; pCur < dwLength; pCur++)
+	uintptr_t firstMatch = NULL;
+	for (uintptr_t pCur = dwAddress; pCur < dwLength; pCur++)
 	{
 		if (!*pat) return firstMatch;
-		if (*(PBYTE)pat == '\?' || *(BYTE*)pCur == getByte(pat)) {
+		if (*(uint8_t *)pat == '\?' || *(uint8_t *)pCur == getByte(pat)) {
 			if (!firstMatch) firstMatch = pCur;
 			if (!pat[2]) return firstMatch;
-			if (*(PWORD)pat == '\?\?' || *(PBYTE)pat != '\?') pat += 3;
+			if (*(uintptr_t *)pat == '\?\?' || *(uint8_t *)pat != '\?') pat += 3;
 			else pat += 2;
 		}
 		else {
@@ -76,19 +76,19 @@ DWORD CSignature::dwFindPattern(DWORD dwAddress, DWORD dwLength, const char* szP
 //===================================================================================
 void *CSignature::GetModuleHandleSafe( const char* pszModuleName )
 {
-	void *hmModuleHandle = NULL;
+	void *moduleHandle = NULL;
 
 	do
 	{
-		hmModuleHandle = dlopen( pszModuleName, RTLD_NOW );
+		moduleHandle = dlopen( pszModuleName, RTLD_NOW );
 		usleep( 1 );
 	}
-	while(hmModuleHandle == NULL);
+	while(moduleHandle == NULL);
 
-	return hmModuleHandle;
+	return moduleHandle;
 }
 //===================================================================================
-DWORD CSignature::GetClientSignature(char* chPattern)
+uintptr_t CSignature::GetClientSignature(char* chPattern)
 {
 	// we need to do this becuase (i assume that) under the hood, dlopen only loads up the sections that it needs
 	// into memory, meaning that we cannot get the string table from the module.
@@ -106,10 +106,10 @@ DWORD CSignature::GetClientSignature(char* chPattern)
 	
 	// we need to remap the address that we got from the pattern search from our mapped file to the actual memory
 	// we do this by rebasing the address (subbing the mmapped one and replacing it with the dlopened one.
-	return dwFindPattern(((DWORD)module) + textOffset, ((DWORD)module) + textOffset + textSize, chPattern) - (DWORD)(module) + moduleMap->l_addr;
+	return dwFindPattern(((uintptr_t)module) + textOffset, ((uintptr_t)module) + textOffset + textSize, chPattern) - (uintptr_t)(module) + moduleMap->l_addr;
 }
 //===================================================================================
-DWORD CSignature::GetEngineSignature(char* chPattern)
+uintptr_t CSignature::GetEngineSignature(char* chPattern)
 {
 	// we need to do this becuase (i assume that) under the hood, dlopen only loads up the sections that it needs
 	// into memory, meaning that we cannot get the string table from the module.
@@ -127,7 +127,7 @@ DWORD CSignature::GetEngineSignature(char* chPattern)
 	
 	// we need to remap the address that we got from the pattern search from our mapped file to the actual memory
 	// we do this by rebasing the address (subbing the mmapped one and adding the dlopened one.
-	return dwFindPattern(((DWORD)module) + textOffset, ((DWORD)module) + textOffset + textSize, chPattern) - (DWORD)(module) + moduleMap->l_addr;
+	return dwFindPattern(((uintptr_t)module) + textOffset, ((uintptr_t)module) + textOffset + textSize, chPattern) - (uintptr_t)(module) + moduleMap->l_addr;
 }
 
 CSignature gSignatures;

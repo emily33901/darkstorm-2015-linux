@@ -4,12 +4,12 @@
 
 CScreenSize gScreenSize;
 //===================================================================================
-void Hooked_PaintTraverse( PVOID pPanels, unsigned int vguiPanel, bool forceRepaint, bool allowForce )
+void Hooked_PaintTraverse( void *pPanels, unsigned int vguiPanel, bool forceRepaint, bool allowForce )
 {
 	try
 	{
 		VMTManager& hook = VMTManager::GetHook(pPanels); //Get a pointer to the instance of your VMTManager with the function GetHook.
-		hook.GetMethod<void(__thiscall*)(PVOID, unsigned int, bool, bool)>(gOffsets.iPaintTraverseOffset)(pPanels, vguiPanel, forceRepaint, allowForce); //Call the original.
+		hook.GetMethod<void(*)(void *, unsigned int, bool, bool)>(gOffsets.iPaintTraverseOffset)(pPanels, vguiPanel, forceRepaint, allowForce); //Call the original.
 
 		static unsigned int vguiMatSystemTopPanel;
 

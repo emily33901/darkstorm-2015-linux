@@ -5,10 +5,10 @@
 class CSignature
 {
 public:
-	DWORD dwFindPattern(DWORD dwAddress, DWORD dwLength, const char* szPattern);
+	uintptr_t dwFindPattern(uintptr_t dwAddress, uintptr_t dwLength, const char* szPattern);
 	void  *GetModuleHandleSafe( const char* pszModuleName );
-	DWORD GetClientSignature ( char* chPattern );
-	DWORD GetEngineSignature ( char* chPattern );
+ 	uintptr_t GetClientSignature ( char* chPattern );
+	uintptr_t GetEngineSignature ( char* chPattern );
 };
 
 extern CSignature gSignatures;

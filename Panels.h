@@ -7,7 +7,7 @@ typedef struct CScreenSize_t
 
 } CScreenSize;
 
-void Hooked_PaintTraverse(PVOID pPanels, unsigned int vguiPanel, bool forceRepaint, bool allowForce);
+void Hooked_PaintTraverse(void *pPanels, unsigned int vguiPanel, bool forceRepaint, bool allowForce);
 void Intro();
 
 extern CScreenSize gScreenSize;
