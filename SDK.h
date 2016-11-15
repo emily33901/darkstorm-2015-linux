@@ -114,59 +114,56 @@ public:
 class CBaseEntity
 {
 public:
-	Vector &GetAbsOrigin()
-	{
-		typedef Vector &(*OriginalFn)(void *);
-		return getvfunc<OriginalFn>(this, 11)(this);
-	}
-	Vector &GetAbsAngles()
-	{
-		typedef Vector &(*OriginalFn)(void *);
-		return getvfunc<OriginalFn>(this, 12)(this);
-	}
-	void GetWorldSpaceCenter(Vector &vWorldSpaceCenter)
-	{
-		Vector vMin, vMax;
-		this->GetRenderBounds(vMin, vMax);
-		vWorldSpaceCenter = this->GetAbsOrigin();
-		vWorldSpaceCenter.z += (vMin.z + vMax.z) / 2;
-	}
-	void *GetModel()
-	{
-		void *pRenderable = (void *)(this + 0x4);
-		typedef void *(*OriginalFn)(void *);
-		return getvfunc<OriginalFn>(pRenderable, 10)(pRenderable);
-	}
-	bool SetupBones(matrix3x4 *pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime)
-	{
-		void *pRenderable = (void *)(this + 0x4);
-		typedef bool (*OriginalFn)(void *, matrix3x4 *, int, int, float);
-		return getvfunc<OriginalFn>(pRenderable, 17)(pRenderable, pBoneToWorldOut, nMaxBones, boneMask, currentTime);
-	}
-	ClientClass *GetClientClass()
-	{
-		void *pNetworkable = (void *)(this + 0x8);
-		typedef ClientClass *(*OriginalFn)(void *);
-		return getvfunc<OriginalFn>(pNetworkable, 3)(pNetworkable);
-	}
-	bool IsDormant()
-	{
-		void *pNetworkable = (void *)(this + 0x8);
-		typedef bool (*OriginalFn)(void *);
-		return getvfunc<OriginalFn>(pNetworkable, 9)(pNetworkable);
-	}
-	int GetIndex()
-	{
-		void *pNetworkable = (void *)(this + 0x8);
-		typedef int (*OriginalFn)(void *);
-		return getvfunc<OriginalFn>(pNetworkable, 10)(pNetworkable);
-	}
-	void GetRenderBounds(Vector &mins, Vector &maxs)
-	{
-		void *pRenderable = (void *)(this + 0x4);
-		typedef void (*OriginalFn)(void *, Vector &, Vector &);
-		getvfunc<OriginalFn>(pRenderable, 21)(pRenderable, mins, maxs);
-	}
+    Vector &GetAbsOrigin()
+    {
+        typedef Vector &(*OriginalFn)(void *);
+        return getvfunc<OriginalFn>(this, 11)(this);
+    }
+    Vector &GetAbsAngles()
+    {
+        typedef Vector &(*OriginalFn)(void *);
+        return getvfunc<OriginalFn>(this, 12)(this);
+    }
+    void GetWorldSpaceCenter(Vector &vWorldSpaceCenter)
+    {
+        Vector vMin, vMax;
+        this->GetRenderBounds(vMin, vMax);
+        vWorldSpaceCenter = this->GetAbsOrigin();
+        vWorldSpaceCenter.z += (vMin.z + vMax.z) / 2;
+    }
+    void *GetModel()
+    {
+        typedef void *(*OriginalFn)(void *);
+        return getvfunc<OriginalFn>(this, 55)(this);
+    }
+    bool SetupBones(matrix3x4 *pBoneToWorldOut, int nMaxBones, int boneMask,
+                    float currentTime)
+    {
+        typedef bool (*OriginalFn)(void *, matrix3x4 *, int, int, float);
+        return getvfunc<OriginalFn>(this, 96)(
+            this, pBoneToWorldOut, nMaxBones, boneMask, currentTime);
+    }
+    ClientClass *GetClientClass()
+    {
+        typedef ClientClass *(*OriginalFn)(void *);
+        return getvfunc<OriginalFn>(this, 17)(this);
+    }
+    bool IsDormant()
+    {
+        typedef bool (*OriginalFn)(void *);
+        return getvfunc<OriginalFn>(this, 75)(this);
+    }
+    int GetIndex()
+    {
+        typedef int (*OriginalFn)(void *);
+        return getvfunc<OriginalFn>(this, 79)(this);
+    }
+    void GetRenderBounds(Vector &mins, Vector &maxs)
+    {
+        typedef void (*OriginalFn)(void *, Vector &, Vector &);
+        getvfunc<OriginalFn>(this, 60)(this, mins, maxs);
+    }
+
 };
 
 class EngineClient
