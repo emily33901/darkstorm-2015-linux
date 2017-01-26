@@ -115,7 +115,7 @@ uintptr_t CSignature::GetEngineSignature(char* chPattern)
 	// into memory, meaning that we cannot get the string table from the module.
 	static int fd = open("./bin/engine.so", O_RDONLY);
 	static void *module = mmap(NULL, lseek(fd, 0, SEEK_END), PROT_READ, MAP_SHARED, fd, 0);
-	static link_map *moduleMap = (link_map *)GetModuleHandleSafe("./tf/bin/engine.so");
+	static link_map *moduleMap = (link_map *)GetModuleHandleSafe("./bin/engine.so");
 
 	//static void *module = (void *)moduleMap->l_addr;
 	
