@@ -141,7 +141,7 @@ void __attribute__((constructor)) base_main()
 	return;
 }
 
-void __attribute__((destructor)) base_)shutdown()
+void __attribute__((destructor)) base_shutdown()
 {
 	// do unload stuff here
 }
